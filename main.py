@@ -15,7 +15,7 @@ from os import getenv
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = getenv("SECRET_KEY")
+app.config['SECRET_KEY'] = getenv("FLASK_KEY")
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 
@@ -33,7 +33,7 @@ class Base(DeclarativeBase):
     pass
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = getenv("DB_URI")
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
@@ -154,7 +154,6 @@ def get_all_posts():
     return render_template("index.html", all_posts=posts)
 
 
-# TODO: Allow logged-in users to comment on posts
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
@@ -237,4 +236,4 @@ def contact():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)
+    app.run(debug=False)
