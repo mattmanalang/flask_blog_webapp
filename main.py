@@ -109,7 +109,8 @@ def register():
                 email=form.email.data,
                 password=generate_password_hash(
                     form.password.data,
-                    method="pbkdf2"  # Default hash_method is sha256 with 600000 iterations
+                    method="pbkdf2",  # Default hash_method is sha256 with 600000 iterations
+                    salt_length=8
                 )  # Default salt_length is 16
             )
             db.session.add(new_user)
